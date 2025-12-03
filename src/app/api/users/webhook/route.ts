@@ -48,15 +48,10 @@ export async function POST(req: Request) {
     })
   }
 
-  // Do something with payload
-  // For this guide, log payload to console
   const eventType = evt.type
-//   console.log(`Received webhook with ID ${data.id} and event type of ${eventType}`)
-//   console.log('Webhook payload:', body)
   
   if(eventType === 'user.created'){
       const { data } = evt 
-      
     await db.insert(users).values({
         clerkId:data.id,
         name: `${data.first_name} ${data.last_name}`,
