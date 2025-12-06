@@ -49,32 +49,38 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type
-  
-  if(eventType === 'user.created'){
-      const { data } = evt 
+
+  if (eventType === 'user.created') {
+    const { data } = evt
     await db.insert(users).values({
-        clerkId:data.id,
+      clerkId: data.id,
+      name: `${data.first_name} ${data.last_name}`,
+      imageUrl: data.image_url
+    }).onConflictDoUpdate({
+      target: users.clerkId,
+      set: {
         name: `${data.first_name} ${data.last_name}`,
         imageUrl: data.image_url
+      }
     })
   }
 
-  if(eventType ==="user.deleted"){
+  if (eventType === "user.deleted") {
     const { data } = evt;
-    if(!data.id){
-        return new Response("missing user id", {status: 400});
+    if (!data.id) {
+      return new Response("missing user id", { status: 400 });
     }
-    await db.delete(users).where(eq(users.clerkId ,data.id));
+    await db.delete(users).where(eq(users.clerkId, data.id));
   }
 
-  if(eventType === "user.updated"){
+  if (eventType === "user.updated") {
     const { data } = evt;
     await db.update(users)
-    .set({
+      .set({
         name: `${data.first_name} ${data.last_name}`,
         imageUrl: data.image_url,
-    })
-    .where(eq(users.clerkId , data.id)) 
+      })
+      .where(eq(users.clerkId, data.id))
   }
 
   return new Response('Webhook received', { status: 200 })
