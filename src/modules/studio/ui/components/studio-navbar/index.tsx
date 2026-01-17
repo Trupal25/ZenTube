@@ -1,3 +1,4 @@
+"use client"
 import Image  from "next/image"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import Link from "next/link"

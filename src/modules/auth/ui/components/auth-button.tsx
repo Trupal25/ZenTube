@@ -11,17 +11,17 @@ export const AuthButton = () => {
         <SignedIn>
             <UserButton>
                 <UserButton.MenuItems>
-                    <UserButton.Action 
-                    onClick={()=> router.push("/profile")}
-                    label="Profile"
-                    labelIcon = {<UserIcon  className="size-4"/>}
+                    <UserButton.Action
+                        onClick={() => router.push("/profile")}
+                        label="Profile"
+                        labelIcon={<UserIcon className="size-4" />}
                     />
                     <UserButton.Action
                         label="Studio"
                         labelIcon={<ClapperboardIcon className="size-4" />}
                         onClick={() => router.push("/studio")}
                     />
-                    <UserButton.Action label="manageAccount"/>
+                    <UserButton.Action label="manageAccount" />
                 </UserButton.MenuItems>
             </UserButton>
         </SignedIn>
