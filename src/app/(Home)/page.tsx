@@ -2,12 +2,12 @@ import { trpc } from "@/trpc/server";
 import { HydrateClient } from "@/trpc/server";
 import { HomeView } from "@/modules/home/ui/views/home-view";
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 interface Pageprops {
   searchParams: {
     categoryId?: string;
-  }
+  };
 }
 
 const Page = async ({ searchParams }: Pageprops) => {
@@ -26,6 +26,6 @@ const Page = async ({ searchParams }: Pageprops) => {
       <HomeView categoryId={categoryId} />
     </HydrateClient>
   );
-}
+};
 
 export default Page;

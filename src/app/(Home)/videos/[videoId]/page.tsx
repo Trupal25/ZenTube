@@ -2,20 +2,20 @@ import { VideoView } from "@/modules/videos/ui/views/video-view";
 import { HydrateClient, trpc } from "@/trpc/server";
 
 interface PageProps {
-    params: {
-        videoId: string;
-    };
+  params: {
+    videoId: string;
+  };
 }
 
 const Page = async ({ params }: PageProps) => {
-    const { videoId } = await params;
-    trpc.videos.getOne.prefetch({ id: videoId });
-    
-    return (
-        <HydrateClient>
-            <VideoView videoId={videoId} />
-        </HydrateClient>
-    )
-}
+  const { videoId } = await params;
+  trpc.videos.getOne.prefetch({ id: videoId });
+
+  return (
+    <HydrateClient>
+      <VideoView videoId={videoId} />
+    </HydrateClient>
+  );
+};
 
 export default Page;

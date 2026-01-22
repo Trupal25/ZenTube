@@ -1,7 +1,3 @@
 export const CommentSection = () => {
-    return (
-        <div >
-            comments
-        </div>
-    )
-}
+  return <div>comments</div>;
+};

@@ -1,7 +1,3 @@
 export const SuggestionsSection = () => {
-    return (
-        <div >
-            Suggestions
-        </div>
-    )
-}
+  return <div>Suggestions</div>;
+};
