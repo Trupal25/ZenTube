@@ -31,6 +31,8 @@ export const users = pgTable(
 
 export const UserRelations = relations(users, ({ many }) => ({
   videos: many(videos),
+  videoViews: many(videoViews),
+  videoReactions: many(videoReactions),
 }));
 
 export const VideoVisibility = pgEnum("video_visibility", [
@@ -169,6 +171,6 @@ export const VideoReactionRelation = relations(videoReactions, ({ one }) => ({
   }),
 }));
 
-const videoReactionSelectSchema = createSelectSchema(videoReactions);
-const videoReactionUpdateSchema = createUpdateSchema(videoReactions);
-const videoReactionInsertSchema = createInsertSchema(videoReactions);
+export const videoReactionSelectSchema = createSelectSchema(videoReactions);
+export const videoReactionUpdateSchema = createUpdateSchema(videoReactions);
+export const videoReactionInsertSchema = createInsertSchema(videoReactions);

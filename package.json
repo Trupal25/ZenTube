@@ -7,6 +7,7 @@
     "dev:webhook": "ngrok http --url=amazed-sharing-parrot.ngrok-free.app 3000",
     "dev": "next dev --turbopack",
     "db:studio": "bun drizzle-kit studio",
+    "db:generate": "bun drizzle-kit generate",
     "db:push": "bun drizzle-kit push",
     "build": "next build",
     "start": "next start",

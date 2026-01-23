@@ -51,24 +51,22 @@ export const videosRouter = createTRPCRouter({
           users: {
             ...getTableColumns(users),
           },
-          videoViews: {
-            viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
-            likeCount: db.$count(
-              videoReactions,
-              and(
-                eq(videoReactions.videoId, videos.id),
-                eq(videoReactions.type, "like"),
-              ),
+          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
+          likeCount: db.$count(
+            videoReactions,
+            and(
+              eq(videoReactions.videoId, videos.id),
+              eq(videoReactions.type, "like"),
             ),
-            dislikeCount: db.$count(
-              videoReactions,
-              and(
-                eq(videoReactions.videoId, videos.id),
-                eq(videoReactions.type, "dislike"),
-              ),
+          ),
+          dislikeCount: db.$count(
+            videoReactions,
+            and(
+              eq(videoReactions.videoId, videos.id),
+              eq(videoReactions.type, "dislike"),
             ),
-            viewerReaction: viewerReactions.type,
-          },
+          ),
+          viewerReaction: viewerReactions.type,
         })
         .from(videos)
         .innerJoin(users, eq(videos.userId, users.id))
