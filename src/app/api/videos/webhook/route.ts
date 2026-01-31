@@ -6,9 +6,9 @@ import {
   VideoAssetDeletedWebhookEvent,
   VideoAssetErroredWebhookEvent,
   VideoAssetReadyWebhookEvent,
-  VideoAssetTrackCreatedWebhookEvent,
+  // VideoAssetTrackCreatedWebhookEvent,
   VideoAssetTrackReadyWebhookEvent,
-  VideoUploadAssetCreatedWebhookEvent,
+  // VideoUploadAssetCreatedWebhookEvent,
 } from "@mux/mux-node/resources/webhooks.mjs";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";

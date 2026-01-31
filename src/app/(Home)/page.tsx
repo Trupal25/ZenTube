@@ -1,6 +1,7 @@
 import { trpc } from "@/trpc/server";
 import { HydrateClient } from "@/trpc/server";
 import { HomeView } from "@/modules/home/ui/views/home-view";
+import { DEFAULT_LIMIT } from "@/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +15,18 @@ const Page = async ({ searchParams }: Pageprops) => {
   const { categoryId } = await searchParams;
 
   // Handle server-side errors during prefetch
-  try {
-    await trpc.categories.getMany.prefetch();
-  } catch (error) {
-    console.error("Failed to prefetch categories:", error);
-    // Error will be handled by client-side error boundary
-  }
+  // try {
+  //   await trpc.categories.getMany.prefetch();
+
+  // } catch (error) {
+  //   console.error("Failed to prefetch categories:", error);
+  //   // Error will be handled by client-side error boundary
+  // }
+  void trpc.categories.getMany.prefetch();
+  void trpc.videos.getMany.prefetchInfinite({
+    categoryId,
+    limit: DEFAULT_LIMIT,
+  });
 
   return (
     <HydrateClient>

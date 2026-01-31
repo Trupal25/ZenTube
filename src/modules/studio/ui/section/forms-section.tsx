@@ -17,7 +17,7 @@ import {
   Loader2Icon,
   LockIcon,
   MoreVerticalIcon,
-  RefreshCwIcon,
+  RotateCcw,
   RotateCcwIcon,
   SparklesIcon,
   TrashIcon,
@@ -73,7 +73,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { THUMBNAIL_FALLBACK } from "@/constants";
+import { APP_URL, THUMBNAIL_FALLBACK } from "@/constants";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal";
 
@@ -127,6 +127,18 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
       toast.error("Failed to remove video,Something went wrong");
     },
   });
+
+  const revalidate = trpc.videos.revalidate.useMutation({
+    onSuccess: () => {
+      utils.studio.getMany.invalidate();
+      utils.studio.getOne.invalidate({ id: videoId });
+      toast.success("revalidation success");
+    },
+    onError: () => {
+      toast.error("Failed to remove video,Something went wrong");
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: video,
@@ -168,7 +180,7 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
     update.mutate({ ...data, id: videoId });
   };
 
-  const fullUrl = `${process.env.VERCEL_URL || "https://localhost:3000"}/videos/${videoId}`;
+  const fullUrl = `${APP_URL}/videos/${videoId}`;
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopy = async () => {
@@ -209,6 +221,12 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => revalidate.mutate({ id: videoId })}
+                  >
+                    <RotateCcw className="size-4 mr-2" />
+                    Revalidate
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => remove.mutate({ id: videoId })}
                   >
