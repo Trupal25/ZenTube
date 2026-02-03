@@ -193,6 +193,7 @@ export const videosRouter = createTRPCRouter({
     .input(
       z.object({
         categoryId: z.string().uuid().nullish(),
+        userId: z.string().uuid().nullish(),
         cursor: z
           .object({
             id: z.string().uuid(),
@@ -203,7 +204,7 @@ export const videosRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const { cursor, limit, categoryId } = input;
+      const { cursor, limit, categoryId, userId } = input;
 
       const data = await db
         .select({
@@ -230,6 +231,7 @@ export const videosRouter = createTRPCRouter({
         .where(
           and(
             eq(videos.visibility, "public"),
+            userId ? eq(videos.userId, userId) : undefined,
             categoryId ? eq(videos.categoryId, categoryId) : undefined,
             cursor
               ? or(
@@ -334,6 +336,7 @@ export const videosRouter = createTRPCRouter({
           eq(viewerSubscriptions.creatorId, users.id),
         )
         .where(and(eq(videos.id, input.id)));
+      // this group by clause is not needed as we are not using count() method instead the db.$count() which is a utility wrapper of count(*), a flexible operator
       // .groupBy(
       //     videos.id,
       //     users.id,
@@ -351,6 +354,7 @@ export const videosRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().uuid(),
+        prompt: z.string().min(10),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -358,6 +362,43 @@ export const videosRouter = createTRPCRouter({
 
       const { workflowRunId } = await workflow.trigger({
         url: `${process.env.UPSTASH_WORKFLOW_URL!}/api/videos/workflow/title`,
+        body: { userId, videoId: input.id },
+      });
+
+      return workflowRunId;
+    }),
+  // TODO: change endpoint and workflow for title generation
+  generateTitle: protectedProcedure
+    .input(
+      z.object({
+        // this might be videoId
+        id: z.string().uuid(),
+        // prompt: z.string().min(10),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      const { workflowRunId } = await workflow.trigger({
+        url: `${process.env.UPSTASH_WORKFLOW_URL!}/api/videos/workflow/title`,
+        body: { userId, videoId: input.id },
+      });
+
+      return workflowRunId;
+    }),
+  // TODO: change endpoint and workflow for title generation
+  generateDescription: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        // prompt: z.string().min(10),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.user;
+
+      const { workflowRunId } = await workflow.trigger({
+        url: `${process.env.UPSTASH_WORKFLOW_URL!}/api/videos/workflow/description`,
         body: { userId, videoId: input.id },
       });
 
