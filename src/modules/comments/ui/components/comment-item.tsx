@@ -120,7 +120,9 @@ export const CommentItem = ({
                   )}
                 />
               </Button>
-              <span>{comment.likeCount}</span>
+              <span className="text-xs text-muted-foreground">
+                {comment.likeCount}
+              </span>
               <Button
                 variant="ghost"
                 disabled={dislike.isPending}
@@ -145,51 +147,51 @@ export const CommentItem = ({
                 variant="ghost"
                 size="sm"
                 className="h-8"
-                onClick={() => {}}
+                onClick={() => {
+                  setIsReplyOpen(true);
+                }}
               >
                 reply
               </Button>
             )}
           </div>
         </div>
-        {comment.user.clerkId !== userId && variant === "comment" && (
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-8">
-                <MoreVerticalIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {variant === "comment" && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsReplyOpen(true);
-                  }}
-                >
-                  <MessageSquareIcon className="size-4" />
-                  reply
-                </DropdownMenuItem>
-              )}
-              {comment.userId === userId && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    remove.mutate({ id: comment.id });
-                  }}
-                >
-                  <Trash2Icon className="size-4" />
-                  Delete
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="size-8">
+              <MoreVerticalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {variant === "comment" && (
+              <DropdownMenuItem
+                onClick={() => {
+                  setIsReplyOpen(true);
+                }}
+              >
+                <MessageSquareIcon className="size-4" />
+                reply
+              </DropdownMenuItem>
+            )}
+            {comment.user.clerkId === userId && (
+              <DropdownMenuItem
+                onClick={() => {
+                  remove.mutate({ id: comment.id });
+                }}
+              >
+                <Trash2Icon className="size-4" />
+                Delete
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       {isReplyOpen && variant === "comment" && (
         <div className="mt-4 pl-14">
           <CommentForm
-            videoId={comment.videoId}
             variant="reply"
             parentId={comment.id}
+            videoId={comment.videoId}
             onCancel={() => setIsReplyOpen(false)}
             onSuccess={() => {
               setIsReplyOpen(false);

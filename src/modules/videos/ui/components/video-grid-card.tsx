@@ -29,7 +29,7 @@ export const VideoGridCard = ({ data, onRemove }: VideoGridCardProps) => {
         />
       </Link>
       <div>
-        <VideoInfo data={data} key={data.id} />
+        <VideoInfo data={data} onRemove={onRemove} key={data.id} />
       </div>
     </div>
   );

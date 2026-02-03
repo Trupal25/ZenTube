@@ -57,6 +57,7 @@ export const CommentForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      parentId,
       videoId,
       value: "",
     },

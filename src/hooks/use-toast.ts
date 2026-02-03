@@ -15,6 +15,9 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement;
 };
 
+// TODO: find a better turn around rather than ignore warning for actionytypes .. not needed as a fix only learning purposes... might aswell delete this file...
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",

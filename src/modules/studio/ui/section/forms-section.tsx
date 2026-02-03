@@ -22,12 +22,7 @@ import {
   SparklesIcon,
   TrashIcon,
 } from "lucide-react";
-import {
-  ControllerFieldState,
-  ControllerRenderProps,
-  useForm,
-  UseFormStateReturn,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,18 +50,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Column,
-  ColumnBaseConfig,
-  ColumnDataType,
-  Assume,
-  Table,
-  TableConfig,
-  SelectedFieldsFlat,
-  View,
-  ColumnsSelection,
-} from "drizzle-orm";
-import { ColumnIsGeneratedAlwaysAs, HandleColumn } from "drizzle-zod";
 import { toast } from "sonner";
 import { VideoPlayer } from "@/modules/videos/ui/components/video-player";
 import Link from "next/link";
@@ -325,6 +308,14 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Thumbnail</FormLabel>
+                    <input
+                      type="hidden"
+                      name={field.name}
+                      ref={field.ref}
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                    />
                     <FormControl>
                       <div className="p-0.5 border border-dashed border-neutral-400 relative h-[48px] w-[153px] group">
                         <Image

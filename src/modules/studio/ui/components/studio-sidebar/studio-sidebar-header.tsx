@@ -31,7 +31,7 @@ export const StudioSidebarHeader = () => {
           <Link href={"/users/current"}>
             <UserAvatar
               imageUrl={user.imageUrl}
-              size="xs"
+              size="sm"
               name={user.fullName ?? "User"}
             />
           </Link>

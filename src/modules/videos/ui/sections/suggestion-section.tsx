@@ -63,7 +63,7 @@ const SuggestionsSectionSuspense = ({
 
   return (
     <>
-      <div className="hidden md:block">
+      <div className="hidden md:block space-y-3">
         {suggestions.pages.flatMap((page) =>
           page.items.map((video) => (
             <VideoRowCard key={video.id} data={video} size="compact" />

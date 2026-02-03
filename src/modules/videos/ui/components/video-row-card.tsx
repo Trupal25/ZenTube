@@ -109,7 +109,7 @@ export const VideoRowCard = ({
 
       {/* info */}
       <div className="flex-1 min-w-0">
-        <div className="justify-between gap-x-2">
+        <div className="flex justify-between gap-x-2">
           <Link href={`/video/${data.id}`} className="flex-1 min-w-0">
             <h3
               className={cn(

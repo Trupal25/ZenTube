@@ -44,15 +44,18 @@ export const ThumbnailGenerateModal = ({
       toast.success(
         "Background task for thumbnail generation started successfully",
       );
+      utils.videos.getOne.invalidate({ id: videoId });
     },
     onError: () => {
       toast.error("Failed to generate thumbnail,Something went wrong");
     },
   });
-  const onSubmit = () => {
-    utils.studio.getOne.invalidate({ id: videoId });
-    utils.studio.getMany.invalidate();
-    onOpenChange(false);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    generateThumbnail.mutate({
+      id: videoId,
+      // TODO: add generate functionality
+      prompt: values.prompt,
+    });
   };
 
   return (

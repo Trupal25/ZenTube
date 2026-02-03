@@ -13,8 +13,8 @@ export const AuthButton = () => {
         <UserButton>
           <UserButton.MenuItems>
             <UserButton.Action
-              onClick={() => router.push("/profile")}
-              label="Profile"
+              onClick={() => router.push("/users/current")}
+              label="My Profile"
               labelIcon={<UserIcon className="size-4" />}
             />
             <UserButton.Action

@@ -20,7 +20,7 @@ const Page = async ({ searchParams }: Pageprops) => {
 
   // } catch (error) {
   //   console.error("Failed to prefetch categories:", error);
-  //   // Error will be handled by client-side error boundary
+  // Error will be handled by client-side error boundary
   // }
   void trpc.categories.getMany.prefetch();
   void trpc.videos.getMany.prefetchInfinite({
