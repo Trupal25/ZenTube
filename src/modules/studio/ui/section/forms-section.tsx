@@ -59,6 +59,7 @@ import { useRouter } from "next/navigation";
 import { APP_URL, THUMBNAIL_FALLBACK } from "@/constants";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FormSectionProps {
   videoId: string;
@@ -75,7 +76,56 @@ export const FormSection = ({ videoId }: FormSectionProps) => {
 };
 
 const FormSectionSkeleton = () => {
-  return <p>Loading....</p>;
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-32" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+        <Skeleton className="h-9 w-24" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="space-y-8 lg:col-span-3">
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-16" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-[220px] w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-[84px] w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-8 lg:col-span-2">
+          <div className="flex flex-col gap-4 bg-[#F9F9F9] rounded-xl overflow-hidden">
+            <Skeleton className="aspect-video" />
+            <div className="px-4 py-4 space-y-6">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-5 w-full" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-5 w-32" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-5 w-32" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
@@ -137,6 +187,7 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
       toast.error("Failed to generate Title,Something went wrong");
     },
   });
+
   const generateDescription = trpc.videos.generateDescription.useMutation({
     onSuccess: () => {
       toast.success(
@@ -396,7 +447,7 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                 )}
               />
             </div>
-            <div className="flex flex-col gap-y-8 lg:col-span-2">
+            <div className="flex flex-col gap-y-6 lg:col-span-2">
               <div className="flex flex-col gap-4 bg-[#f9f9f9] rounded-xl overflow-hidden h-fit">
                 <div className="aspect-video overflow-hidden relative">
                   <VideoPlayer
@@ -410,84 +461,89 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                       <p className="text-xs text-muted-foreground">
                         Video link
                       </p>
-                      <Link href={`/videos/${video.id}`}>
-                        <p className="line-clamp-1 text-sm text-blue-500 hover:underline">
-                          {fullUrl}
-                        </p>
-                      </Link>
-                      <Button
-                        onClick={onCopy}
-                        type="button"
-                        variant="ghost"
-                        className="shrink-0"
-                        size="icon"
-                        disabled={isCopied}
-                      >
-                        {isCopied ? (
-                          <CheckIcon className="size-4" />
-                        ) : (
-                          <CopyIcon className="size-4" />
+                      <div className="flex items-center">
+                        <Link href={`/videos/${video.id}`}>
+                          <p className="line-clamp-1 text-sm text-blue-500 hover:underline">
+                            {fullUrl}
+                          </p>
+                        </Link>
+                        <Button
+                          onClick={onCopy}
+                          type="button"
+                          variant="ghost"
+                          className="shrink-0"
+                          size="icon"
+                          disabled={isCopied}
+                        >
+                          {isCopied ? (
+                            <CheckIcon className="size-4" />
+                          ) : (
+                            <CopyIcon className="size-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-y-1">
+                      <p className="text-muted-foreground text-xs">
+                        Video status
+                      </p>
+                      <p className="text-sm">
+                        {snakeCaseToTitle(video.muxStatus || "preparing")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-y-1">
+                      <p className="text-muted-foreground text-xs">
+                        Subtitiles Status
+                      </p>
+                      <p className="text-sm">
+                        {snakeCaseToTitle(
+                          video.muxTrackStatus || "no_subtitles",
                         )}
-                      </Button>
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex flex-col gap-y-1">
-                    <p className="text-muted-foreground text-xs">
-                      Video status
-                    </p>
-                    <p className="text-sm">
-                      {snakeCaseToTitle(video.muxStatus || "preparing")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex flex-col gap-y-1">
-                    <p className="text-muted-foreground text-xs">
-                      Subtitiles Status
-                    </p>
-                    <p className="text-sm">
-                      {snakeCaseToTitle(video.muxTrackStatus || "no_subtitles")}
-                    </p>
-                  </div>
-                </div>
               </div>
+
+              <FormField
+                control={form.control}
+                name="visibility"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Visibility</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value ?? undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Visibility" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="public">
+                          <div className="flex items-center gap-x-1">
+                            <Globe2Icon className="size-4" />
+                            Public
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="private">
+                          <div className="flex items-center gap-x-1">
+                            <LockIcon className="size-4" />
+                            Private
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <FormField
-              control={form.control}
-              name="visibility"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Visibility</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value ?? undefined}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Visibility" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="public">
-                        <div className="flex items-center gap-x-1">
-                          <Globe2Icon className="size-4" />
-                          Public
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="private">
-                        <div className="flex items-center gap-x-1">
-                          <LockIcon className="size-4" />
-                          Private
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
         </form>
       </Form>
