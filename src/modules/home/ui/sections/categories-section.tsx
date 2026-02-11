@@ -9,11 +9,13 @@ interface categoriesSectionProps {
   categoryId?: string;
 }
 
-const ErrorFallback = ({ error }: { error: Error }) => {
+const ErrorFallback = ({ error }: { error: unknown }) => {
+  const errorMessage =
+    error instanceof Error ? error.message : "An unknown error occurred";
   return (
     <div className="p-4 bg-red-50 border border-red-200 rounded">
       <h2 className="text-red-800 font-semibold">Something went wrong</h2>
-      <p className="text-red-600 text-sm mt-2">{error.message}</p>
+      <p className="text-red-600 text-sm mt-2">{errorMessage}</p>
     </div>
   );
 };
